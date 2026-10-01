@@ -13,9 +13,12 @@ jobs:
 
       - name: Instalar Dependencias y psprecomp
         run: |
+          export GIT_TERMINAL_PROMPT=0
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake
-          git clone https://github.com/MrPurple64/psprecomp.git
+          sudo apt-get install -y build-essential cmake git
+          
+          # Clona la herramienta oficial de recompilación de PSP
+          git clone https://github.com/psprecomp/psprecomp.git || git clone https://github.com/zelda-recomp/psprecomp.git
           cd psprecomp && cmake -B build && cmake --build build
 
       - name: Descompilar EBOOT a C++
