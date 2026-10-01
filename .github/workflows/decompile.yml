@@ -3,6 +3,9 @@ name: Descompilacion Automatica Shin Budokai 2
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   decompile-psp:
     runs-on: ubuntu-latest
@@ -61,5 +64,4 @@ jobs:
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
           git add source/
-          git commit -m "Codigo C++ generado exitosamente para Shin Budokai 2"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Codigo C++ generado exitosamente para Shin Budokai 2" && git push)
