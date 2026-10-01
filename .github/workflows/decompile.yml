@@ -1,0 +1,32 @@
+name: Descompilacion Automatica Ghost of Sparta
+
+on:
+  workflow_dispatch:
+
+jobs:
+  decompile-psp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar Repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Dependencias y psprecomp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+          git clone https://github.com/MrPurple64/psprecomp.git
+          cd psprecomp && cmake -B build && cmake --build build
+
+      - name: Descompilar EBOOT a C++
+        run: |
+          mkdir -p source
+          ./psprecomp/build/psprecomp --input EBOOT.BIN --output ./source/
+
+      - name: Guardar Codigo C++ en GitHub
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "action@github.com"
+          git add source/
+          git commit -m "Codigo C++ generado automaticamente para Ghost of Sparta"
+          git push
